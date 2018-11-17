@@ -6,6 +6,9 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class Main {
 	
+	/**
+	 * @uml.property  name="zip"
+	 */
 	private int zip;
 
 	public Main(int zip) {
