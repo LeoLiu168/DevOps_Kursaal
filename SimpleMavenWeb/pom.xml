@@ -7,33 +7,91 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>SimpleMavenWeb Maven Webapp</name>
   <url>http://maven.apache.org</url>
+
+  <properties>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	<java.version>1.8</java.version>
+
+	<struts2.version>2.5.14.1</struts2.version>
+	<log4j2.version>2.10.0</log4j2.version>
+  </properties>	
+  
+  <dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts2-bom</artifactId>
+			<version>${struts2.version}</version>
+			<type>pom</type>
+			<scope>import</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-bom</artifactId>
+			<version>${log4j2.version}</version>
+			<scope>import</scope>
+			<type>pom</type>
+		</dependency>
+	</dependencies>
+  </dependencyManagement>
+
   <dependencies>
-  	<dependency> 
-  		<groupId>org.apache.geronimo.specs</groupId> 
-  		<artifactId>geronimo-servlet_2.4_spec</artifactId> 
-  		<version>1.1.1</version>
+	<!-- Struts 2 -->
+	<dependency>
+		<groupId>org.apache.struts</groupId>
+		<artifactId>struts2-core</artifactId>
+	</dependency>
+	<!-- log4j -->
+	<dependency>
+		<groupId>org.apache.logging.log4j</groupId>
+		<artifactId>log4j-core</artifactId>
+	</dependency>
+	<!-- Servlet -->
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<version>2.5</version>
 		<scope>provided</scope>
 	</dependency>
-	<dependency> 
-		<groupId>org.apache.geronimo.specs</groupId> 
-		<artifactId>geronimo-jsp_2.0_spec</artifactId> 
-		<version>1.1</version> 
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>jsp-api</artifactId>
+		<version>2.0</version>	
 		<scope>provided</scope>
 	</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
+  
   <build>
     <finalName>SimpleMavenWeb</finalName>
     <plugins>
+    	<!-- 设置编译版本为1.8 -->
 		<plugin> 
-			<groupId>org.mortbay.jetty</groupId> 
-			<artifactId>maven-jetty-plugin</artifactId>
+			<groupId>org.apache.maven.plugins</groupId> 
+			<artifactId>maven-compiler-plugin</artifactId>
+			<configuration>
+				<source>1.8</source>
+				<target>1.8</target>
+				<encoding>UTF-8</encoding>
+			</configuration>
 		</plugin> 
+		<!-- 配置Jetty插件 -->
+		<plugin>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-maven-plugin</artifactId>
+            <version>9.4.7.v20170914</version>
+            <configuration>
+                <webApp>
+                    <contextPath>/</contextPath>
+                </webApp>
+                <stopKey>CTRL+C</stopKey>
+                <stopPort>8999</stopPort>
+                <scanIntervalSeconds>10</scanIntervalSeconds>
+                <scanTargets>
+                    <scanTarget>src/main/webapp/WEB-INF/web.xml</scanTarget>
+                </scanTargets>
+            </configuration>
+        </plugin>
 	</plugins>
   </build>
 </project>
